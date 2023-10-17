@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -30,9 +31,14 @@ export default function Login() {
       password: '',
     },
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
   }
 
   return (
@@ -73,7 +79,7 @@ export default function Login() {
                 />
               </div>
               <div className="text-right">
-                <Button type="submit" className="mt-8">
+                <Button type="submit" className="mt-8" isLoading={isLoading}>
                   登录
                 </Button>
               </div>
