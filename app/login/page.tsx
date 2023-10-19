@@ -16,24 +16,20 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-const formSchema = z
-  .object({
-    username: z.string().min(1, { message: '不能为空' }),
-    password: z.string().min(1, { message: '不能为空' }),
-  })
-  .required()
+const formSchema = z.object({
+  token: z.string().min(1, { message: '不能为空' }),
+})
 
 export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
-      password: '',
+      token: '',
     },
   })
   const [isLoading, setIsLoading] = useState(false)
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
     setIsLoading(true)
     setTimeout(() => {
@@ -53,23 +49,10 @@ export default function Login() {
               <div className="space-y-2">
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="token"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>用户名</FormLabel>
-                      <FormControl>
-                        <Input type="text" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>密码</FormLabel>
+                      <FormLabel>Token</FormLabel>
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
