@@ -11,8 +11,10 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { setToken } from '@/lib/storage'
+import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -27,14 +29,19 @@ export default function Login() {
       token: '',
     },
   })
-  const [isLoading, setIsLoading] = useState(false)
+
+  const router = useRouter()
+  const mutation = trpc.auth.useMutation()
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
+    try {
+      await mutation.mutateAsync({ ...values })
+    } catch (error) {
+      form.setError('token', { message: '验证失败' })
+      return
+    }
+    setToken(values.token)
+    router.replace('/')
   }
 
   return (
@@ -62,7 +69,7 @@ export default function Login() {
                 />
               </div>
               <div className="text-right">
-                <Button type="submit" className="mt-8" isLoading={isLoading}>
+                <Button type="submit" className="mt-8" isLoading={mutation.isLoading}>
                   登录
                 </Button>
               </div>

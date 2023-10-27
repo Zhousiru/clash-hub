@@ -50,7 +50,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={props.isLoading || props.disabled}
         {...restProps}
       >
-        <span className={cn({ invisible: props.isLoading })}>{children}</span>
+        <span
+          className={cn('inline-flex items-center justify-center', { invisible: props.isLoading })}
+        >
+          {children}
+        </span>
         {props.isLoading && (
           <div className="flex justify-center items-center absolute inset-0">
             <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>

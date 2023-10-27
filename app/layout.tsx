@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Clash Hub',
 }
 
-const notoSans = Noto_Sans_SC({ weight: 'variable', subsets: ['latin'] })
+const notoSans = Noto_Sans_SC({ weight: '400', subsets: ['latin'] })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={cn('bg-gray-100', notoSans.className)}>
         <TrpcProvider>
           <Navbar />
-          <div className="max-w-screen-xl mx-auto mt-12">{children}</div>
+          <div className="max-w-screen-xl px-2 box-content mx-auto mt-12">{children}</div>
         </TrpcProvider>
       </body>
     </html>
