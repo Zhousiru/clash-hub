@@ -5,7 +5,7 @@ export function setToken(token: string) {
 export function getToken(): string {
   const token = localStorage.getItem('token')
   if (!token) {
-    throw new Error('Token is empty.')
+    throw new Error('Token is empty')
   }
   return token
 }
