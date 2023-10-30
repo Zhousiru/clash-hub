@@ -1,5 +1,6 @@
+import * as common from '@/lib/api/common'
 import { prefix, redis } from '@/lib/api/db'
-import * as db from '@/lib/api/source'
+import * as source from '@/lib/api/source'
 import { SourceConfigSchema } from '@/lib/types/source'
 import { z } from 'zod'
 import { publicProcedure } from '../server'
@@ -19,13 +20,13 @@ export const setSourceConfig = publicProcedure
   })
 
 export const getSources = publicProcedure.query(() => {
-  return db.getSources()
+  return source.getSources()
 })
 
 export const getSourceConfig = publicProcedure
   .input(z.object({ source: z.string() }))
   .query(async ({ input }) => {
-    return db.getSourceConfig(input.source)
+    return source.getSourceConfig(input.source)
   })
 
 export const testResolve = publicProcedure
@@ -35,6 +36,16 @@ export const testResolve = publicProcedure
     }),
   )
   .query(async ({ input }) => {
-    const config = await db.getSourceConfig(input.source)
-    return db.resolveNodes(config)
+    const config = await source.getSourceConfig(input.source)
+    return source.resolveNodes(config)
+  })
+
+export const getCommonConfig = publicProcedure.query(() => {
+  return common.getCommonConfig()
+})
+
+export const setCommonConfig = publicProcedure
+  .input(z.object({ config: z.string() }))
+  .mutation(({ input }) => {
+    return common.setCommonConfig(input.config)
   })

@@ -1,5 +1,6 @@
 'use client'
 
+import { CommonConfigEditor } from '@/components/CommonConfigEditor'
 import { SourceList } from '@/components/NodeSourceList'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -12,11 +13,22 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useLayoutEffect } from 'react'
 import { AddSourceDialog } from '../components/AddSourceDialog'
 
-function GroupCard({ title, children }: { title: string; children: ReactNode }) {
+function GroupCard({
+  title,
+  desc,
+  children,
+}: {
+  title: string
+  desc: string | ReactNode
+  children: ReactNode
+}) {
   return (
     <div>
-      <h1 className="pl-2 text-7xl font-bold italic opacity-20 relative -z-10">{title}</h1>
-      <Card className="-mt-2 p-6">{children}</Card>
+      <div className="ml-2 italic opacity-30">
+        <h1 className="text-7xl font-bold">{title}</h1>
+        <h2 className="mt-2 pl-8 text-xl opacity-60">{desc}</h2>
+      </div>
+      <Card className="mt-2 p-6">{children}</Card>
     </div>
   )
 }
@@ -34,12 +46,11 @@ export default function Home() {
   })
 
   return (
-    <div className="flex flex-col gap-10">
-      <GroupCard title="节点来源">
-        <div className="flex mb-4">
+    <div className="flex flex-col gap-16 mb-32">
+      <GroupCard title="节点来源" desc="从订阅链接中提取节点">
+        <div className="flex gap-2 mb-4">
           <AddSourceDialog />
           <Button
-            className="ml-2"
             variant="outline"
             onClick={() => queryClient.invalidateQueries(getQueryKey(trpc.testResolve))}
           >
@@ -49,7 +60,35 @@ export default function Home() {
         <SourceList />
       </GroupCard>
 
-      <GroupCard title="全局配置">114514</GroupCard>
+      <GroupCard title="全局配置" desc="附加在配置顶部">
+        <CommonConfigEditor />
+      </GroupCard>
+
+      <GroupCard
+        title="节点组"
+        desc={
+          <>
+            定义 <code>proxy-groups</code>
+          </>
+        }
+      >
+        114514
+      </GroupCard>
+
+      <GroupCard
+        title="规则来源"
+        desc={
+          <>
+            定义 <code>rule-providers</code>
+          </>
+        }
+      >
+        114514
+      </GroupCard>
+
+      <GroupCard title="规则编辑" desc="定义代理规则">
+        114514
+      </GroupCard>
     </div>
   )
 }
